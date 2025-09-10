@@ -1,44 +1,26 @@
-# Part 0 — Exercises 0.1–0.6
+# Part 0 Exercises
 
-## 0.1: HTML
-- [x] Read Mozilla "HTML tutorial" (reading task only)
-
-## 0.2: CSS
-- [x] Read Mozilla "CSS tutorial" (reading task only)
-
-## 0.3: HTML forms
-- [x] Read Mozilla "Your first form" (reading task only)
-
----
-
-## 0.4: New note diagram (classic app)
-The user writes a note at `/exampleapp/notes` and clicks **Save**.
+## 0.4: New note diagram
 
 ```mermaid
 sequenceDiagram
-    participant browser
-    participant server
+    participant Browser
+    participant Server
 
-    Note over browser: User types note and clicks "Save"
-    browser->>server: POST /exampleapp/new_note (payload: content, date)
-    activate server
-    server-->>browser: 302 Found (Location: /exampleapp/notes)
-    deactivate server
+    Browser->>Server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    activate Server
+    Server-->>Browser: HTML document
+    deactivate Server
 
-    Note right of browser: Browser follows redirect
-    browser->>server: GET /exampleapp/notes
-    activate server
-    server-->>browser: HTML document
-    deactivate server
+    Browser->>Server: GET /main.css
+    Server-->>Browser: CSS file
 
-    browser->>server: GET /exampleapp/main.css
-    server-->>browser: CSS
+    Browser->>Server: GET /main.js
+    Server-->>Browser: JavaScript file
 
-    browser->>server: GET /exampleapp/main.js
-    server-->>browser: JavaScript
+    Note right of Browser: Browser executes JavaScript code that fetches notes
 
-    Note right of browser: JS runs and fetches updated data
-    browser->>server: GET /exampleapp/data.json
-    server-->>browser: JSON [..., {"content":"<new note>","date":"..."}]
+    Browser->>Server: GET /data.json
+    Server-->>Browser: JSON [{content: "HTML is easy", date: "2023-01-01"}, ... ]
 
-    Note right of browser: JS renders the updated note list to the DOM
+    Note right of Browser: Browser executes callback to render notes
